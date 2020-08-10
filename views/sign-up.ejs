@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=pageTitle%></title>
+    <link rel="stylesheet" href="/main.css">
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <h1>Sign-up</h1>
+    <form>
+        <label for="name">Username</label>
+        <input id="input-username" type="text" name="name">
+        <label for="email">Email</label>
+        <input id="input-email" type="text" name="email">
+        <label for="password"> Password</label>
+        <input id="input-password" type="password" name="password">
+        
+        <button id="btn-register" type="button">Register</button>
+    </form>
+</body>
+<script>
+    $("#btn-register").click(function(){
+        $.ajax({
+            url: '/sign-up',
+            type: 'POST',
+            data : {
+                username : $("#input-username").val(),
+                password : $("#input-password").val(),
+                email : $("#input-email").val()
+            }
+        })
+        .then(data=>{
+            if(data){
+                alert(data);
+                window.location.href = "/sign-up";
+            }else{
+                window.location.href = "/login"; // Dung ajax thi ko dung res.redirect
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+        });
+    });
+</script>
+</html>

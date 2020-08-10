@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=pageTitle%></title>
+    <link rel="stylesheet" href="/main.css">
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <h1>Login</h1>
+    <form>
+        <label for="name">Username</label>
+        <input id="input-username" type="text" name="name">
+        <label for="password"> Password</label>
+        <input id="input-password" type="password" name="password">
+        <button id="btn-login" type="button">Login</button>
+    </form>
+</body>
+<script>
+    $("#btn-login").click(function(){
+        $.ajax({
+            url: '/login',
+            type: 'POST',
+            data : {
+                username : $("#input-username").val(),
+                password : $("#input-password").val()
+            }
+        }).then(data=>{
+            if(data){
+                window.location.href = "/book"; // Dung ajax thi ko dung res.redirect
+            }else{
+                alert("Wrong Username or Password");
+                window.location.href = "/login";
+            }
+        });
+    });
+</script>
+</html>

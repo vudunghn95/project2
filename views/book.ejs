@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=pageTitle%></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="http://pagination.js.org/dist/2.1.5/pagination.js"></script>
+    <style>
+        .active-number{
+            background-color :turquoise;
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+    <div class="container mb-5">
+        <div class="row" id="content">
+            <% if(books.length!==0) { %>
+                <%for(let book of books){ %>
+                    <div class="card col-3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title text-center"><%=cardTitle%></h5>
+                            <p class="card-text">Name : 
+                                <span class="text-<%=book._id%>"><%=book.name%></span>
+                                <% if(edit) { %>
+                                    <input type="text" id="input-name-<%=book._id%>" class="input-<%=book._id%>" value='<%=book.name%>' style="display:none"/>
+                                <% } %>
+                            </p>
+                        <% if(edit) { %>
+                            <button id="btn-edit-<%=book._id%>" onClick="editData(`<%=book._id%>`)" type="button" class="btn btn-info">Edit</button>
+                            <button id="btn-save-<%=book._id%>" onClick="saveData(`<%=book._id%>`)" type="button" style="display:none" class="btn btn-success">Save</button>
+                            <button onclick="deleteData(`<%=book._id%>`)" type="button" class="btn btn-warning">Delete</button>   
+                        <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <h1>Books Not Found</h1>
+            <% } %>      
+        </div>
+    </div>  
+</body>
+<script>
+    function editData(id){
+        $(".text-"+id).css("display","none");
+        $(".input-"+id).css("display","inline-block");
+        $("#btn-edit-"+id).css("display","none");
+        $("#btn-save-"+id).css("display","inline-block");
+    }
+    function saveData(id){
+        $(".text-"+id).css("display","inline-block");
+        $(".input-"+id).css("display","none");
+        $("#btn-edit-"+id).css("display","inline-block");
+        $("#btn-save-"+id).css("display","none");
+        $.ajax({
+            url: "/book/admin/"+id,
+            type: "PUT",
+            data : {
+                name : $("#input-name-"+id).val()
+            }
+        })
+        .then(data=>{
+            window.location.href = '/book/admin';
+        })
+        .catch(err=>{
+            console.log(err);
+        });
+    }
+    function deleteData(id){
+        $.ajax({
+            url: "/book/admin/"+id,
+            type: "DELETE"
+        })
+        .then(data=>{
+            window.location.href = '/book/admin';
+        })
+        .catch(err=>{
+            console.log(err);
+        });
+    }
+</script>
+
+</html>

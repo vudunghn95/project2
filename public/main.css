@@ -1,0 +1,26 @@
+h1{
+    color: brown;
+}
+label{
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+}
+input{
+    margin-bottom: 5px;
+}
+button{
+    display: block;
+    padding: 5px 15px;
+    color: white;
+    background-color: cadetblue;
+    border: none;
+    border-radius: 3px;
+}
+a{
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: tomato;
+    color: seashell;
+    border-radius: 3px;
+}
